@@ -1,6 +1,18 @@
 <?php
     session_start();
-    require_once("dataset.php");
+    // require_once("dataset.php");
+    require("function.php");
+    $con = openConnection();
+    $id = mysqli_real_escape_string($con, $_Get['k']);
+    echo $id;
+
+    $sql = 'SELECT * FROM tbl_products';
+    $results = mysqli_query($con, $sql);
+    $arr_item = mysqli_fetch_all($results, MYSQLI_ASSOC);
+
+    echo $arr_item [$id]['id'];
+    echo $arr_item [$id]['name'];
+
 
     if(isset($_POST['process'])) {
         if(isset($_SESSION['cart'][$_POST['id']][$_POST['size']]))
@@ -44,19 +56,19 @@
             </div>
         </div>
         <div class="row">
-            <?php if(isset($_GET['k']) && ($_GET['k'] < count($products))): ?>                
+            <?php if(isset($arr_item [$id]['id'])): ?>                
                     <div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-4">                        
                         <div class="product-image2">                            
-                            <img class="pic-1 w-100" src="img/<?php echo $products[$_GET['k']]['photo1']; ?>">                                                    
+                            <img class="pic-1 w-100" src="img/<?php echo $arr_item [$id]['photo1']; ?>">                                                    
                         </div>
                     </div>
                     <div class="col-12 col-sm-12 col-md-8 col-lg-8 mb-4">
                         <form method="post">
                             <div class="product-content">
                                 <h3 class="title">
-                                    <?php echo $products[$_GET['k']]['name']; ?> <span class="badge badge-dark">₱ <?php echo $products[$_GET['k']]['price']; ?></span>
+                                    <?php echo $arr_item [$id]['photo1'] ?> <span class="badge badge-dark">₱ <?php echo $arr_item [$id]['price']; ?></span>
                                 </h3>                        
-                                <p><?php echo $products[$_GET['k']]['description']; ?></p>
+                                <p><?php echo $arr_item [$id]['photo1']['description']; ?></p>
                                 <hr>
 
                                 <input type="hidden" name="id" value="<?php echo $_GET['k']; ?>">

@@ -1,6 +1,14 @@
 <?php
     session_start();
-    require_once("dataset.php");    
+    // require_once("dataset.php");
+    require("function.php");
+    $con = openConnection();
+    $id = mysqli_real_escape_string($con, $_Get['k']);
+    echo $id;
+
+    $sql = 'SELECT * FROM tbl_products';
+    $results = mysqli_query($con, $sql);
+    $arr_item = mysqli_fetch_all($results, MYSQLI_ASSOC);
 
     $_SESSION['total_price'] = 0;
 
@@ -71,15 +79,15 @@
                                             $_SESSION['total_price'] += $total;
                                         ?>
                                         <tr>
-                                            <td><img class="img-thumbnail" src="img/<?php echo $products[$id]['photo1'] ?>" style="height: 50px" /></td>
-                                            <td><?php echo $products[$id]['name'] ?></td>
+                                            <td><img class="img-thumbnail" src="img/<?php echo $arr_item [$id]['id'] ?>" style="height: 50px" /></td>
+                                            <td><?php echo $arr_item [$id]['name'] ?></td>
                                             <td><?php echo $size ?></td>
                                             <td>
                                                 <input type="hidden" name="id[]" value="<?php echo $id ?>" />
                                                 <input type="hidden" name="size[]" value="<?php echo $size ?>" />
                                                 <input type="number" name="quantity[]" class="form-control text-center" value="<?php echo $quantity ?>" placeholder="0" min="1" max="100" required="" />
                                             </td>
-                                            <td class="text-right">₱ <?php echo number_format($products[$id]['price'], 2); ?></td>
+                                            <td class="text-right">₱ <?php echo number_format($arr_item [$id]['price'], 2); ?></td>
                                             <td class="text-right">₱ <?php echo number_format($total, 2); ?></td>
                                             <td class="text-right">
                                                 <a href="remove.php?k=<?php echo $id ?>&s=<?php echo $size ?>&q=<?php echo $quantity ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>

@@ -32,16 +32,31 @@
                     Learn IT Easy Online Shop
                 </h1>
             </div>
-            <div class="col-2 text-right">
-                <a href="cart.php" class="btn btn-primary">
-                    <i class="fa fa-shopping-cart"></i>
-                    Cart <span class="badge badge-light"><?php echo $_SESSION['cart_count']; ?></span>
-                </a>
+            <div class = "mr-1">
+                    <a href="validateCart.php" class="btn btn-primary">
+                        <i class="fa fa-shopping-cart"></i> Cart
+                        <span class="badge badge-light">                        
+                            <?php echo (isset($_SESSION['totalQuantity']) ? $_SESSION['totalQuantity'] : "0"); ?>
+                        </span>
+                    </a>
+                </div>
+            <div>
+                <?php if (isset($_SESSION['customerName'])){ ?>
+            <div class="dropdown">
+                  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i>
+                    <?php echo $_SESSION['customerName'];  ?>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="frontChangePassword.php">Change Password</a>
+                    <a class="dropdown-item text-danger" href="signout.php">log out</a>
+                  </div>
             </div>
-            <div class="col-12">
-                <hr>
-            </div>
-        </div>
+                <?php }else{ ?> 
+                    <a href="login.php" class="btn btn-primary text-white" >
+                        Sign In
+                    </a>
+                <?php } ?>
+            </div>            
         <div class="row">
             <?php if(isset($products)): ?>
                 <?php foreach($products as $id => $product): ?>
