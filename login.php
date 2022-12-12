@@ -1,38 +1,33 @@
-<?php
-     session_start();
-     require("function.php");
-     $con = openConnection();
-     
-     if (isset($_POST['loginbtn'])){
+<?php 
+session_start();
 
-        $password = $_POST['password'];
-        $email  =  $_POST['email'];
-     
-        $email = stripslashes();
-        $password = stripcslashes();
+require_once ("function.php"); 
 
-        $email = mysqli_real_escape_string($con , $email);
-        $password = mysqli_real_escape_string($con , $email);
+    if(isset($_POST['btnlogin'])){
+        $con = openConn();
 
-        $strSql = "SELECT * FROM tbl_customer
-                    WHERE email_Address = ' email'
-                    AND password = ' $password'
-                    ";
+        $username = sanitizeInput($con, $_POST['username']);
+        $password = sanitizeInput($con, $_POST['password']);
+        
+        $password = md5($password);
 
-                if ($Logins = mysqli_query($con, $strSql)) {
-                    if (mysqli_num_rows($Logins)>0) {
-                        echo 'Welcome to the system';
-                        foreach ($Logins as $key => $value) {
-                            $_SESSION['customerID'] = $value['customerID'];
-                            $_SESSION['customerName'] = $value['firstName'];
-                            header('location: index.php');
-                        }
-                    }else
-                        echo 'invalid Username/password';
-                }
-                else
-                    echo "could not execute your request";
+        $strSql = "SELECT * FROM tbl_user
+                WHERE username = '$username'
+                AND password = '$password'
+            ";
+
+        $rsLogin = getRecord($con, $strSql);
+        if(!empty($rsLogin)){
+            header("location: dashboard.php");
+            mysqli_free_result($rsLogin);
         }
+        
+        else {
+            echo 'ERROR: Could not execute your request!';
+        }
+       
+        closeConn($con);   
+    }
 ?>
 
 <!DOCTYPE html>
@@ -66,20 +61,14 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text br-15"><i class="fa fa-lock"></i></i></span>
                             </div>
-                            <input type="text" placeholder="Password" class="form-control"/>
-                        </div>
-                        <div class="input-group mt-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text br-15"><i class="fas fa-at"></i></span>
-                            </div>
-                            <input type="email" placeholder="Email Address" class="form-control"/>
+                            <input type="password" placeholder="Password" class="form-control"/>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="card-footer">
-                <a class="btn btn-secondary btn-sm" id="add_more"><i class="fas fa-plus-circle"></i> Create Account</a>
-                <button type="submit" name="loginbtn" class="btn btn-success btn-sm float-right submit_btn"><i class="fas fa-arrow-alt-circle-right"></i> Login</button>
+                <a href = "register.php" class="btn btn-secondary btn-sm"  id="add_more"> <i class="fas fa-plus-circle"></i> Create Account</a>
+                <button type="submit" name="loginbtn" href ="dashboard.php" class="btn btn-success btn-sm float-right submit_btn"><i class="fas fa-arrow-alt-circle-right"></i> Login</button>
             </div>
         </div>
     </div>

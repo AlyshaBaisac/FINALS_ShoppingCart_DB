@@ -1,31 +1,29 @@
 <?php 
 	require('function.php');
 
-	$err = array('first_name' =>'', 'last_name' =>'', 'email' =>'', 'txtAddress'=>'', 'password' =>'');
+	$err = array('First_name' =>'', 'Last_name' =>'', 'email' =>'', 'Address'=>'', 'password' =>'');
 
-	$firstname = $lastname = $sex = $email = $bday = $txtNumber = $txtAddress = '';
+	$firstname = $lastname = $sex = $email = $Address = '';
 
-	if (isset($_POST['CrtAccount'])) {
+	if (isset($_POST['Register_acc'])) {
 		$con = openConnection();
 
 		$firstname = sanitizeInput($con, $_POST['First_name']);
 		$lastname = sanitizeInput($con, $_POST['Last_name']);
 		$sex = sanitizeInput($con, $_POST['radSex']);
 		$email = sanitizeInput($con, $_POST['txtEmail']);
-		$txtAddress = sanitizeInput($con, $_POST['txtAddress']);
+		$Address = sanitizeInput($con, $_POST['Address']);
 
 		if (empty($firstname))
-			$err['first_name'] = "First Name is required";
+			$err['First_name'] = "First Name is required";
 
 		if (empty($lastname))
-			$err['last_name'] = "Last Name is required"; 
+			$err['Last_name'] = "Last Name is required"; 
 
 		if (empty($email)){
 			$err['email'] = "Email is required"; 
 		} else {
-			//$err['email'] = "Email is typed";
 
-			 //$email = $_POST['txtEmail'];
 		  $email_query = "SELECT * FROM tbl_customer WHERE emailAddress = '$email'";
 	      $email_query_run = mysqli_query($con, $email_query);
 
@@ -34,23 +32,17 @@
 	      }
 		}
 
-		if (empty($bday))
-			$err['bday'] = "Birthday is required"; 	
+		if (empty($Address))
+			$err['Address'] = "Address is required"; 
 
-		if (empty($txtNumber))
-			$err['txtNumber'] = "Phone Number is required"; 
-
-		if (empty($txtAddress))
-			$err['txtAddress'] = "Address is required"; 
-
-		if ($_POST['CrtPassword'] != $_POST['RptPassword']) 
+		if ($_POST['NewPass'] != $_POST['RptPass']) 
 			$err['password'] = "Password not match/required";
 
-		$password = md5($_POST['CrtPassword']);
+		$password = md5($_POST['NewPass']);
 
 			if(!array_filter($err)){
-					$strSql = "INSERT INTO tbl_customer(firstName, lastName, sex, emailAddress, address, password) 
-					VALUES ('$firstname', '$lastname', '$sex', '$email', '$bday', '$password') 
+					$strSql = "INSERT INTO tbl_customer(First_name, Last_name, sex, emailAddress, address, password) 
+					VALUES ('$firstname', '$lastname', $Address ,'$sex', '$email', '$password') 
 
 					";
 
@@ -58,12 +50,19 @@
 						echo "success";
 						header("location: index.php");
 					}
-					else
-						echo "errorL: ";
-
-				}
+                    else {
+                        echo ' 
+                                <div class="alert alert-danger alert-dismissible fade show col-4 offset-4 mt-5" role="alert">
+                                    <strong>Invalid User Name/Password.</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            '; 
+                    }
 	
 			}
+    }
  ?>
 <!DOCTYPE html>
 <html>
@@ -75,7 +74,7 @@
 </head>
 <body>
 	<div class="container">
-		<br>  <p class="text-center">Shopping Cart</a></p>
+		<br>  <p class="text-center">Registration Form</a></p>
 		<hr>
 		<div class="card bg-light">
 			<article class="card-body mx-auto" style="max-width: 400px;">
@@ -87,7 +86,7 @@
 					 </div>
 			        <input name="First_name" class="form-control" placeholder="First Name" type="text" value="<?php echo $firstname; ?>">
 			    </div> <!-- form-group// -->
-			    <label class="text-danger"><?php echo $err['first_name'];?></label>
+			    <label class="text-danger"><?php echo $err['First_name'];?></label>
 
 				<div class="form-group input-group">
 					<div class="input-group-prepend">
@@ -95,7 +94,7 @@
 					 </div>
 			        <input name="Last_name" class="form-control" placeholder="Last Name" type="text" value="<?php echo $lastname; ?>">
 			    </div> <!-- form-group// -->
-			    <label class="text-danger"><?php echo $err['last_name'];?></label>
+			    <label class="text-danger"><?php echo $err['Last_name'];?></label>
 
 				<div class="form-group input-group">
 					<div class="input-group-prepend">
@@ -113,7 +112,7 @@
 				        <label class="form-check-label" for="flexRadioDefault1">
 				          Female
 				        </label>
-				    <?php } else {?>
+				        <?php } else {?>
 				        <input type="radio" name="radSex" id="flexRadioDefault1" value="Male" >
 				        <label class="form-check-label" for="flexRadioDefault1">
 				          Male
@@ -132,9 +131,9 @@
 			    	<div class="input-group-prepend">
 					    <span class="input-group-text"><i class="fas fa-home"></i></span>
 					 </div>
-			        <input name="txtAddress" class="form-control" placeholder="Address" type="text" value="<?php echo $txtAddress; ?>">	        
+			        <input name="Address" class="form-control" placeholder="Address" type="text" value="<?php echo $Address; ?>">	        
 			    </div>
-			    <label class="text-danger"><?php echo $err['txtAddress'];?></label>
+			    <label class="text-danger"><?php echo $err['Address'];?></label>
 
 			    <div class="form-group input-group">
 			    	<div class="input-group-prepend">
@@ -148,19 +147,19 @@
 			    	<div class="input-group-prepend">
 					    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
 					</div>
-			        <input name="CrtPassword" class="form-control" placeholder="Create password" type="password">
+			        <input name="NewPass" class="form-control" placeholder="Create password" type="password">
 			    </div> 
 
 			    <div class="form-group input-group">
 			    	<div class="input-group-prepend">
 					    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
 					</div>
-			        <input name="RptPassword" class="form-control" placeholder="Repeat password" type="password">
+			        <input name="RptPass" class="form-control" placeholder="Repeat password" type="password">
 			    </div> 
 			    <label class="text-danger"><?php echo $err['password'];?></label>
 
 			    <div class="form-group">
-			        <button type="submit" name="CrtAccount" class="btn btn-primary btn-block"> Create Account  </button>
+			        <button type="submit" name="Register_acc" class="btn btn-primary btn-block"> Create Account  </button>
 			    </div> 
 
 			    <p class="text-center">Have an account? <a href="login.php">Log In</a> </p>                                                                 

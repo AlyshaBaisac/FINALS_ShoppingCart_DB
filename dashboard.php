@@ -1,13 +1,14 @@
 <?php
     session_start();
-    require('funtions.php');
+    $_SESSION['CURR_PAGE'] = 'dashboard';
+    // session_start();
+    // // require('funtions.php');
     $con = openConnection();
 
     $sql = 'SELECT * FROM tbl_products';
     $results = mysqli_query($con, $sql);
     $recProduct = mysqli_fetch_all($results,MYSQLI_ASSOC);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
