@@ -59,46 +59,56 @@
 	<title>Login Form</title>
 </head>
 <body>
-	<div class="container">
-		<br>  <p class="text-center">Registration Form</a></p>
-		<hr>
-		<div class="card bg-light">
-			<article class="card-body mx-auto" style="max-width: 400px;">
-				<h4 class="card-title mt-3 text-center">Create Account</h4>
-			<form method="post">
-				<div class="form-group input-group">
-					<div class="input-group-prepend">
-					 </div>
-				<div class="form-group input-group">
-					<div class="input-group-prepend">
-					    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-					 </div>
-			        <input name="Last_name" class="form-control" placeholder="User Name" type="text" value="<?php echo $username; ?>">
-			    </div> <!-- form-group// -->
-			    <div class="form-group input-group">
-			    	<div class="input-group-prepend">
-					    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-					</div>
-			        <input name="NewPass" class="form-control" placeholder="Create password" type="password">
-			    </div> 
-			    <div class="form-group input-group">
-			    	<div class="input-group-prepend">
-					    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-					</div>
-			        <input name="RptPass" class="form-control" placeholder="Repeat password" type="password">
-                    
-			    </div> 
-			    <label class="text-danger"><?php echo $err['password'];?></label>
+<section class="vh-100 bg-image"
+  style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
+  <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+              <h2 class="text-uppercase text-center mb-5">Create an account</h2>
 
-			    <div class="form-group">
-			        <button type="submit" name="Register_acc" class="btn btn-primary btn-block"> Create Account  </button>
-			    </div> 
+              <form>
 
-			    <p class="text-center">Have an account? <a href="login.php">Log In</a> </p>                                                                 
-			</form>
-			</article>
-		</div> 
-	</div> 	
+                <div class="form-outline mb-4">
+                  <input type="text" id="form3Example1cg" name="Fname" placeholder="First Name" class="form-control form-control-lg" value="<?php echo $firstname; ?>" required/>
+                  <label class="form-label" for="form3Example1cg">Your Name</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                  <input type="email" id="form3Example3cg" name="txtEmail" class="form-control form-control-lg" placeholder="Email Address" value="<?php echo $email; ?>" required/>
+                  <label class="form-label" for="form3Example3cg"><?php echo $err['email'];?>Your Email</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                  <input type="password" id="form3Example4cg" name="CrtPassword" class="form-control form-control-lg" placeholder="Password" required />
+                  <label class="form-label" for="form3Example4cg">Password</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                  <input type="password" id="form3Example4cdg" name="RptPassword" class="form-control form-control-lg" placeholder="Password" required/>
+                  <label class="form-label" for="form3Example4cdg">Repeat your password</label>
+                </div>
+
+                <div class="d-flex justify-content-center">
+				<label class="text-danger"><?php echo $err['password'];?></label>
+					<button type="submit" name="CrtAccount" class="btn btn-primary btn-user btn-block text-white">
+						Register Account</button>
+                </div>
+
+                <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="login.php"
+                    class="fw-bold text-body"><u>Login here</u></a></p>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </body>

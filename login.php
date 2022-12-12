@@ -1,34 +1,10 @@
-<?php 
-session_start();
-
-require_once ("function.php"); 
-
-    if(isset($_POST['btnlogin'])){
-        $con = openConn();
-
-        $username = sanitizeInput($con, $_POST['username']);
-        $password = sanitizeInput($con, $_POST['password']);
-        
-        $password = md5($password);
-
-        $strSql = "SELECT * FROM tbl_user
-                WHERE username = '$username'
-                AND password = '$password'
-            ";
-
-        $rsLogin = getRecord($con, $strSql);
-        if(!empty($rsLogin)){
-            header("location: dashboard.php");
-            mysqli_free_result($rsLogin);
-        }
-        
-        else {
-            echo 'ERROR: Could not execute your request!';
-        }
-       
-        closeConn($con);   
-    }
+<?php
+    require('function.php');
+    session_start();
+    $com = openConnection();
 ?>
+
+
 
 <!DOCTYPE html>
 <html>
@@ -42,6 +18,37 @@ require_once ("function.php");
 </head>
 <!-- Coded With Love By Mutiullah Samim-->
 <body>
+    <?php 
+    session_start();
+
+    require_once ("function.php"); 
+
+        if(isset($_POST['btnlogin'])){
+            $con = openConn();
+
+            $username = sanitizeInput($con, $_POST['username']);
+            $password = sanitizeInput($con, $_POST['password']);
+            
+            $password = md5($password);
+
+            $strSql = "SELECT * FROM tbl_user
+                    WHERE username = '$username'
+                    AND password = '$password'
+                ";
+
+            $rsLogin = getRecord($con, $strSql);
+            if(!empty($rsLogin)){
+                header("location: dashboard.php");
+                mysqli_free_result($rsLogin);
+            }
+            
+            else {
+                echo 'ERROR: Could not execute your request!';
+            }
+        
+            closeConn($con);   
+        }
+    ?>
     <dvi class="container h-100">
     <div class="d-flex justify-content-center">
         <div class="card mt-5 col-md-4 animated bounceInDown myForm">
@@ -68,7 +75,7 @@ require_once ("function.php");
             </div>
             <div class="card-footer">
                 <a href = "register.php" class="btn btn-secondary btn-sm"  id="add_more"> <i class="fas fa-plus-circle"></i> Create Account</a>
-                <button type="submit" name="loginbtn" href ="dashboard.php" class="btn btn-success btn-sm float-right submit_btn"><i class="fas fa-arrow-alt-circle-right"></i> Login</button>
+                <button type="submit" name="loginbtn" class="btn btn-success btn-sm float-right submit_btn"><i class="fas fa-arrow-alt-circle-right"></i> Login</button>
             </div>
         </div>
     </div>
