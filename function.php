@@ -1,56 +1,50 @@
-<?php
-    DEFINE("DB_SERVER", "localhost");
-    DEFINE("DB_USERNAME", "root");
-    DEFINE("DB_PASSWORD", "");
-    DEFINE("DB_NAME", "shopping_db_cart");
+<?php 
+	DEFINE("DB_SERVER", "localhost");
+	DEFINE("DB_USERNAME", "root");
+	DEFINE("DB_PASSWORD", "");
+	DEFINE("DB_NAME", "shoppingcart3b");
 
-    function openConn(){
-        $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+	function openConnection(){
+		$con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+		if ($con === false) 
+			die("Error: could not connect" . mysqli_connect_error());
 
-            if($con === false)
-                die("ERROR: Could not connect" . mysqli_connect_error());
+		return $con;		
+	}
 
-            return($con);
-    }
-    function closeConn($con){
-        mysqli_close($con);
+	function closeConnection($con){
+		mysql_close($con);
+	}
 
-    }
-    function getRecord($con, $strSql){  
-        $arrRec = [];
-        $i = 0;
 
-        if($rs = mysqli_query($con, $strSql)){
-            if(mysqli_num_rows($rs) == 1){
-                $rec = mysqli_fetch_array($rs);
-                foreach ($rec as $key => $value) {
-                    $arrRec[$key] = $value;
-                }
+	function sanitizeInput($con, $input){
+		return mysqli_real_escape_string($con, stripcslashes(htmlspecialchars($input)));
+	}
+
+	function fileUpload($imgInput){
+
+		$arrErrors = array();
+		
+		  $fileName = $imgInput['name'];
+          $fileSize = $imgInput['size'];
+          $fileTemp= $imgInput['tmp_name'];
+          $fileType= $imgInput['type'];
+
+          $fileExtTemp = explode('.', $fileName);
+          $fileExt = strtolower(end($fileExtTemp));
+
+          $arrAllowedFiles = array('jpeg', 'jpg', 'png');
+          $uploadDIR = 'uploads/';
+
+          if (in_array($fileExt, $arrAllowedFiles) === false) 
+               $arrErrors[] = "extension file (".$fileName .")is not allowed, you can only choose JPG JPEG PNG";
+
+
+            if (empty($arrErrors)) {
+            	 move_uploaded_file($fileTemp, $uploadDIR . $fileName);
+            }else{
+               $arrErrors[] ='fil upload Error';
             }
-            elseif(mysqli_num_rows($rs) > 1){
-                while($rec = mysqli_fetch_array($rs)){
-                    foreach ($rec as $key => $value) {
-                        $arrRec[$i][$key] = $value;
-                    }
-                    $i++;
-                }
-            }
-            mysqli_free_result($rs);
-        }
-        else 
-            die("ERROR: Could not execute your request!");
-
-        return $arrRec;
-    }
-
-    function executeInsertlastIDQuery($con, $strSql){
-        if($rs = mysqli_query($con, $strSql))
-            return mysqli_insert_id($con);
-        else
-            return 0;
-    }
-
-    function sanitizeInput($con, $input){
-        return mysqli_real_escape_string($con, stripslashes(htmlspecialchars( $input)));
-    }
+           return $arrErrors[] = $arrErrors;
+	}
 ?>
