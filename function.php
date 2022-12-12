@@ -1,52 +1,50 @@
 <?php 
-	define("DB_SERVER", "localhost");
-	define("DB_USERNAME", "root");
-	define("DB_PASSWORD", "");
-	define("DB_NAME", "shopping_db_cart");
-
+	DEFINE("DB_SERVER", "localhost");
+	DEFINE("DB_USERNAME", "root");
+	DEFINE("DB_PASSWORD", "");
+	DEFINE("DB_NAME", "shoppingcart3b");
 
 	function openConnection(){
-		$con = mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_NAME);
-		if($con === false)
-			die("Error: could not connect " . mysqli_connect_error());
+		$con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+		if ($con === false) 
+			die("Error: could not connect" . mysqli_connect_error());
 
-
-		return $con;
+		return $con;		
 	}
 
 	function closeConnection($con){
 		mysql_close($con);
 	}
 
-	function sanitizeinput($con, $input){
-		return mysqli_real_escape_string($con, stripcslashes(htmlspecialchars($input)));
 
-	}	
+	function sanitizeInput($con, $input){
+		return mysqli_real_escape_string($con, stripcslashes(htmlspecialchars($input)));
+	}
 
 	function fileUpload($imgInput){
 
 		$arrErrors = array();
 		
-		  $imageName = $imgInput['name'];
-          $imageSize = $imgInput['size'];
-          $imageTemp= $imgInput['tmp_name'];
-          $imageType= $imgInput['type'];
+		  $fileName = $imgInput['name'];
+          $fileSize = $imgInput['size'];
+          $fileTemp= $imgInput['tmp_name'];
+          $fileType= $imgInput['type'];
 
-          $imageExtTemp = explode('.', $imageName);
-          $imageExt = strtolower(end($imageExtTemp));
+          $fileExtTemp = explode('.', $fileName);
+          $fileExt = strtolower(end($fileExtTemp));
 
           $arrAllowedFiles = array('jpeg', 'jpg', 'png');
-          $uploadDIR = 'ImageUpload/';
+          $uploadDIR = 'uploads/';
 
-          if (in_array($imageExt, $arrAllowedFiles) === false) 
-               $arrErrors[] = "extension file (".$imageName .")is not allowed, you can only choose JPG JPEG PNG";
+          if (in_array($fileExt, $arrAllowedFiles) === false) 
+               $arrErrors[] = "extension file (".$fileName .")is not allowed, you can only choose JPG JPEG PNG";
 
 
             if (empty($arrErrors)) {
-            	 move_uploaded_file($imageTemp, $uploadDIR . $imageName);
+            	 move_uploaded_file($fileTemp, $uploadDIR . $fileName);
             }else{
                $arrErrors[] ='fil upload Error';
             }
            return $arrErrors[] = $arrErrors;
 	}
- ?>
+?>

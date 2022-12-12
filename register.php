@@ -1,56 +1,34 @@
 <?php 
-	require('function.php');
+	require_once('function.php');
 
-	$err = array('first_name' =>'', 'last_name' =>'', 'email' =>'', 'txtAddress'=>'', 'password' =>'');
+	$err = array('First_name' =>'', 'email' =>'', 'password' =>'');
 
-	$firstname = $lastname = $sex = $email = $bday = $txtNumber = $txtAddress = '';
+	$firstname = $username = $Address = '';
 
-	if (isset($_POST['CrtAccount'])) {
+	if (isset($_POST['Register_acc'])) {
 		$con = openConnection();
 
 		$firstname = sanitizeInput($con, $_POST['First_name']);
-		$lastname = sanitizeInput($con, $_POST['Last_name']);
-		$sex = sanitizeInput($con, $_POST['radSex']);
+		$username = sanitizeInput($con, $_POST['Last_name']);
 		$email = sanitizeInput($con, $_POST['txtEmail']);
-		$txtAddress = sanitizeInput($con, $_POST['txtAddress']);
 
 		if (empty($firstname))
-			$err['first_name'] = "First Name is required";
+			$err['First_name'] = "First Name is required";
 
-		if (empty($lastname))
-			$err['last_name'] = "Last Name is required"; 
+		if (empty($username))
+			$err['Last_name'] = "Last Name is required"; 
 
-		if (empty($email)){
-			$err['email'] = "Email is required"; 
-		} else {
-			//$err['email'] = "Email is typed";
+		if (empty($Address))
+			$err['Address'] = "Address is required"; 
 
-			 //$email = $_POST['txtEmail'];
-		  $email_query = "SELECT * FROM tbl_customer WHERE emailAddress = '$email'";
-	      $email_query_run = mysqli_query($con, $email_query);
-
-	      if(mysqli_num_rows($email_query_run) > 0){
-	       $err['email'] = 'email is existing';
-	      }
-		}
-
-		if (empty($bday))
-			$err['bday'] = "Birthday is required"; 	
-
-		if (empty($txtNumber))
-			$err['txtNumber'] = "Phone Number is required"; 
-
-		if (empty($txtAddress))
-			$err['txtAddress'] = "Address is required"; 
-
-		if ($_POST['CrtPassword'] != $_POST['RptPassword']) 
+		if ($_POST['NewPass'] != $_POST['RptPass']) 
 			$err['password'] = "Password not match/required";
 
-		$password = md5($_POST['CrtPassword']);
+		$password = md5($_POST['NewPass']);
 
 			if(!array_filter($err)){
-					$strSql = "INSERT INTO tbl_customer(firstName, lastName, sex, emailAddress, address, password) 
-					VALUES ('$firstname', '$lastname', '$sex', '$email', '$bday', '$password') 
+					$strSql = "INSERT INTO tbl_customer(First_name, Last_name, password) 
+					VALUES ('$firstname', '$username', '$password') 
 
 					";
 
@@ -58,12 +36,19 @@
 						echo "success";
 						header("location: index.php");
 					}
-					else
-						echo "errorL: ";
-
-				}
+                    else {
+                        echo ' 
+                                <div class="alert alert-danger alert-dismissible fade show col-4 offset-4 mt-5" role="alert">
+                                    <strong>Invalid User Name/Password.</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            '; 
+                    }
 	
 			}
+    }
  ?>
 <!DOCTYPE html>
 <html>
@@ -74,100 +59,56 @@
 	<title>Login Form</title>
 </head>
 <body>
-	<div class="container">
-		<br>  <p class="text-center">Shopping Cart</a></p>
-		<hr>
-		<div class="card bg-light">
-			<article class="card-body mx-auto" style="max-width: 400px;">
-				<h4 class="card-title mt-3 text-center">Create Account</h4>
-			<form method="post">
-				<div class="form-group input-group">
-					<div class="input-group-prepend">
-					    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-					 </div>
-			        <input name="First_name" class="form-control" placeholder="First Name" type="text" value="<?php echo $firstname; ?>">
-			    </div> <!-- form-group// -->
-			    <label class="text-danger"><?php echo $err['first_name'];?></label>
+<section class="vh-100 bg-image"
+  style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
+  <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+              <h2 class="text-uppercase text-center mb-5">Create an account</h2>
 
-				<div class="form-group input-group">
-					<div class="input-group-prepend">
-					    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-					 </div>
-			        <input name="Last_name" class="form-control" placeholder="Last Name" type="text" value="<?php echo $lastname; ?>">
-			    </div> <!-- form-group// -->
-			    <label class="text-danger"><?php echo $err['last_name'];?></label>
+              <form>
 
-				<div class="form-group input-group">
-					<div class="input-group-prepend">
-					    <span class="input-group-text"> <i class="fas fa-venus-mars"></i> </span>
-					</div>
-				 	<label class="form-control">Gender:
-				      <div class="form-check" >
+                <div class="form-outline mb-4">
+                  <input type="text" id="form3Example1cg" name="Fname" placeholder="First Name" class="form-control form-control-lg" value="<?php echo $firstname; ?>" required/>
+                  <label class="form-label" for="form3Example1cg">Your Name</label>
+                </div>
 
-				      	<?php if ($sex =='' OR $sex == 'Male') { ?>
-				        <input type="radio" name="radSex" id="flexRadioDefault1" value="Male" checked="">
-				        <label class="form-check-label" for="flexRadioDefault1">
-				          Male
-				        </label>
-				        <input type="radio" name="radSex" id="flexRadioDefault1" value="Female">
-				        <label class="form-check-label" for="flexRadioDefault1">
-				          Female
-				        </label>
-				    <?php } else {?>
-				        <input type="radio" name="radSex" id="flexRadioDefault1" value="Male" >
-				        <label class="form-check-label" for="flexRadioDefault1">
-				          Male
-				        </label>
-				        <input type="radio" name="radSex" id="flexRadioDefault1" value="Female" checked="">
-				        <label class="form-check-label" for="flexRadioDefault1">
-				          Female
-				        </label>
-				    <?php } ?>
-				  </label>      
-			      </div>
-			    </div> 
-			     <!-- form-group// -->
+                <div class="form-outline mb-4">
+                  <input type="email" id="form3Example3cg" name="txtEmail" class="form-control form-control-lg" placeholder="Email Address" value="<?php echo $email; ?>" required/>
+                  <label class="form-label" for="form3Example3cg"><?php echo $err['email'];?>Your Email</label>
+                </div>
 
-			    <div class="form-group input-group">
-			    	<div class="input-group-prepend">
-					    <span class="input-group-text"><i class="fas fa-home"></i></span>
-					 </div>
-			        <input name="txtAddress" class="form-control" placeholder="Address" type="text" value="<?php echo $txtAddress; ?>">	        
-			    </div>
-			    <label class="text-danger"><?php echo $err['txtAddress'];?></label>
+                <div class="form-outline mb-4">
+                  <input type="password" id="form3Example4cg" name="CrtPassword" class="form-control form-control-lg" placeholder="Password" required />
+                  <label class="form-label" for="form3Example4cg">Password</label>
+                </div>
 
-			    <div class="form-group input-group">
-			    	<div class="input-group-prepend">
-					    <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
-					 </div>
-			        <input name="txtEmail" class="form-control" placeholder="Email address" type="email" value="<?php echo $email; ?>">
-			    </div> 
-			    <label class="text-danger"><?php echo $err['email'];?></label>
+                <div class="form-outline mb-4">
+                  <input type="password" id="form3Example4cdg" name="RptPassword" class="form-control form-control-lg" placeholder="Password" required/>
+                  <label class="form-label" for="form3Example4cdg">Repeat your password</label>
+                </div>
 
-			    <div class="form-group input-group">
-			    	<div class="input-group-prepend">
-					    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-					</div>
-			        <input name="CrtPassword" class="form-control" placeholder="Create password" type="password">
-			    </div> 
+                <div class="d-flex justify-content-center">
+				<label class="text-danger"><?php echo $err['password'];?></label>
+					<button type="submit" name="CrtAccount" class="btn btn-primary btn-user btn-block text-white">
+						Register Account</button>
+                </div>
 
-			    <div class="form-group input-group">
-			    	<div class="input-group-prepend">
-					    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-					</div>
-			        <input name="RptPassword" class="form-control" placeholder="Repeat password" type="password">
-			    </div> 
-			    <label class="text-danger"><?php echo $err['password'];?></label>
+                <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="login.php"
+                    class="fw-bold text-body"><u>Login here</u></a></p>
 
-			    <div class="form-group">
-			        <button type="submit" name="CrtAccount" class="btn btn-primary btn-block"> Create Account  </button>
-			    </div> 
+              </form>
 
-			    <p class="text-center">Have an account? <a href="login.php">Log In</a> </p>                                                                 
-			</form>
-			</article>
-		</div> 
-	</div> 	
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </body>

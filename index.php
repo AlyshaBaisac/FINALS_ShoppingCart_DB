@@ -1,14 +1,9 @@
 <?php
-    session_start();    
-   // require_once("dataset.php");
-   require("function.php");
+  session_start();    
+  require_once("dataset.php");
 
-   $con = openConnection();
-   $strSql = "SELECT * FROM tbl_products";
-   $products = mysqli_query($con, $strSql);
-
-    if(!isset($_SESSION['cart_count']))
-        $_SESSION['cart_count'] = 0;
+  if(!isset($_SESSION['cart_count']))
+      $_SESSION['cart_count'] = 0;
 ?>
 
 
