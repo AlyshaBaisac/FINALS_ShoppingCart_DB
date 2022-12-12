@@ -18,41 +18,39 @@
 		mysql_close($con);
 	}
 
-
-
 	function sanitizeinput($con, $input){
 		return mysqli_real_escape_string($con, stripcslashes(htmlentities($input)));
 
 	}	
 
-	function fileupload($imgInput){
+	// function fileupload($imgInput){
 
-		$arr_Error = array()
+	// 	$arr_Error = array()
 
-			$ImageName = $imgInput['name'];
-			$ImageSize = $imgInput['size'];
-			$ImageTemp = $imgInput['tmp_name'];
-			$ImageType = $imgInput['type'];
+	// 		$imageName = $imgInput['name'];
+	// 		$imageSize = $imgInput['size'];
+	// 		$imageTemp = $imgInput['tmp_name'];
+	// 		$imageType = $imgInput['type'];
 
-			$ImageExtTemp = explode ('.', $ImageName);
-			$imgeExt = strtolower(end($ImageExtTemp));
-
-
-			$arrInsertImage = array ('jpeg', 'jpg', 'png');
-			$ImageUpload = 'ImageUpload/';
+	// 		$imageExtTemp = explode ('.', $imageName);
+	// 		$imgeExt = strtolower(end($imageExtTemp));
 
 
-				if (in_array ($ImageExtTemp, $arrInsertImage === false)) {
-					$arr_Error[] = "Extension File (" . $ImageName .")  is not allowed only jpg, jpeg and png!";
+	// 		$arrInsertImage = array ('jpeg', 'jpg', 'png');
+	// 		$ImageUpload = 'ImageUpload/';
 
 
-					if (empty($arr_Error)) {
-						move_uploaded_file($ImageTemp, $arrInsertImage, $ImageName );
+	// 			if (in_array ($imageExtTemp, $arrInsertImage === false)) {
+	// 				$arr_Error[] = "Extension File (" . $imageName .")  is not allowed only jpg, jpeg and png!";
 
-					}else{
-						$arr_Error[] = 'fill upload error';
 
-					}return $arr_Error[] = $arr_Error;
-				}
-	}
+	// 				if (empty($arr_Error)) {
+	// 					move_uploaded_file($ImageTemp, $arrInsertImage, $imageName );
+
+	// 				}else{
+	// 					$arr_Error[] = 'fil upload error';
+
+	// 				}return $arr_Error[] = $arr_Error;
+	// 			}
+	// }
  ?>
