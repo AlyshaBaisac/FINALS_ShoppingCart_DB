@@ -4,8 +4,6 @@
     $com = openConnection();
 ?>
 
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +17,6 @@
 <!-- Coded With Love By Mutiullah Samim-->
 <body>
     <?php 
-    session_start();
 
     require_once ("function.php"); 
 

@@ -1,55 +1,52 @@
-<?php 
-	require_once('function.php');
+<?php
+		require('function.php');
 
-	$err = array('First_name' =>'', 'email' =>'', 'password' =>'');
+		$err = array('email' =>'', 'password' =>'');
 
-	$firstname = $username = $Address = '';
+		$firstname = $email = '';
 
-	if (isset($_POST['Register_acc'])) {
-		$con = openConnection();
+		if (isset($_POST['CrtAccount'])) {
+			$con = openConnection();
 
-		$firstname = sanitizeInput($con, $_POST['First_name']);
-		$username = sanitizeInput($con, $_POST['Last_name']);
-		$email = sanitizeInput($con, $_POST['txtEmail']);
+			$firstname = sanitizeInput($con, $_POST['Fname']);
+			$email = sanitizeInput($con, $_POST['txtEmail']);
 
-		if (empty($firstname))
-			$err['First_name'] = "First Name is required";
 
-		if (empty($username))
-			$err['Last_name'] = "Last Name is required"; 
+			if (empty($email)){
+				$err['email'] = "Email is required"; 
+			} else {
+				//$err['email'] = "Email is typed";
 
-		if (empty($Address))
-			$err['Address'] = "Address is required"; 
+				//$email = $_POST['txtEmail'];
+			$email_query = "SELECT * FROM tbl_customer WHERE emailAddress = '$email'";
+			$email_query_run = mysqli_query($con, $email_query);
 
-		if ($_POST['NewPass'] != $_POST['RptPass']) 
+			if(mysqli_num_rows($email_query_run) > 0){
+			$err['email'] = 'email is existing';
+			}
+			}
+			if ($_POST['CrtPassword'] != $_POST['RptPassword']) 
 			$err['password'] = "Password not match/required";
-
-		$password = md5($_POST['NewPass']);
-
+	
+		$password = md5($_POST['CrtPassword']);
+	
 			if(!array_filter($err)){
-					$strSql = "INSERT INTO tbl_customer(First_name, Last_name, password) 
-					VALUES ('$firstname', '$username', '$password') 
-
+					$strSql = "INSERT INTO tbl_customer(firstName, emailAddress, password) 
+					VALUES ('$firstname', '$email', '$password') 
+	
 					";
-
+	
 					if (mysqli_query($con, $strSql)) {
 						echo "success";
-						header("location: index.php");
+						header("location: login.php");
 					}
-                    else {
-                        echo ' 
-                                <div class="alert alert-danger alert-dismissible fade show col-4 offset-4 mt-5" role="alert">
-                                    <strong>Invalid User Name/Password.</strong>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            '; 
-                    }
+					else
+						echo "errorL: ";
+	
+				}
 	
 			}
-    }
- ?>
+	  ?>
 <!DOCTYPE html>
 <html>
 <head>
