@@ -1,13 +1,17 @@
 <?php
-    session_start();
-    require('funtions.php');
+    ob_start();
+        session_start();
+
+    require('function.php');
+
+    arr = array('ProductName'=>'', 'ProductPrice'=>'', 'ProdDes'=>'', 'image1'=>'', 'image2'=>'');
+    $Product_name = $Product_price = $product_desc = ''; 
+
     $con = openConnection();
 
-    $sql = 'SELECT * FROM tbl_products';
-    $results = mysqli_query($con, $sql);
-    $recProduct = mysqli_fetch_all($results,MYSQLI_ASSOC);
-?>
 
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -46,13 +50,25 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin User <b class="fa fa-angle-down"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#"><i class="fa fa-fw fa-user"></i> Edit Profile</a></li>
+                    
                     <li><a href="#"><i class="fa fa-fw fa-cog"></i> Change Password</a></li>
                     <li class="divider"></li>
                     <li><a href="#"><i class="fa fa-fw fa-power-off"></i> Logout</a></li>
                 </ul>
             </li>
         </ul>
+    <!-- Begin Page Content -->
+        <div tabindex="-1" class="modal bs-example-modal-sm" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                <div class="modal-header"><h4>Logout <i class="fa fa-lock"></i></h4></div>
+                <div class="modal-body"><i class="fa fa-question-circle"></i> Are you sure you want to log-off?</div>
+                <div class="modal-footer"><a class="btn btn-primary btn-block" href="javascript:;">Logout</a></div>
+            </div>
+        </div>
+        </div>
+        <div class="container-fluid">
+       
         <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav side-nav">
@@ -63,23 +79,7 @@
                         <li><a href="#"><i class="fa fa-angle-double-right"></i> SUBMENU 1.2</a></li>
                         <li><a href="#"><i class="fa fa-angle-double-right"></i> SUBMENU 1.3</a></li>
                     </ul>
-                </li>
-                <li>
-                    <a href="#" data-toggle="collapse" data-target="#submenu-2"><i class="fa fa-fw fa-star"></i>  MENU 2 <i class="fa fa-fw fa-angle-down pull-right"></i></a>
-                    <ul id="submenu-2" class="collapse">
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> SUBMENU 2.1</a></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> SUBMENU 2.2</a></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> SUBMENU 2.3</a></li>
-                    </ul>
-                </li>
-                <li>
                     <a href="investigaciones/favoritas"><i class="fa fa-fw fa-user-plus"></i>  MENU 3</a>
-                </li>
-                <li>
-                    <a href="sugerencias"><i class="fa fa-fw fa-paper-plane-o"></i> MENU 4</a>
-                </li>
-                <li>
-                    <a href="faq"><i class="fa fa-fw fa fa-question-circle"></i> MENU 5</a>
                 </li>
             </ul>
         </div>
