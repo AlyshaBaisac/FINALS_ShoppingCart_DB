@@ -1,3 +1,45 @@
+<?php
+     session_start();
+     require("function.php");
+     $con = openConnection();
+     
+     if (isset($_POST['loginbtn'])){
+
+        $password = $_POST['password'];
+        $email  =  $_POST['email'];
+     
+        $email = stripslashes();
+        $password = stripcslashes();
+
+        $email = mysqli_real_escape_string($con , $email);
+        $password = mysqli_real_escape_string($con , $email);
+
+        $strSql = "SELECT * FROM tbl_customer
+                    WHERE email_Address = ' email'
+                    AND password = ' $password'
+                    ";
+
+        if ($Login_success = mysqli_query($con, $strSql)){
+
+            if(mysqli_num_rows($Login_success) > 0){
+                echo 'Welcome Dear Customer!'
+                foreach ($Login_success as $key => $value ){
+                    $_SESSION ['customer_ID'] = $value ['customer_ID'];
+                    $_SESSION ['customer_Name'] = $value ['First_name'];
+                    header(location: index.php);
+
+                }
+                else
+                    echo 'Invalid Username/Password';
+
+            }
+            else
+                echo 'cant execute your request';
+        }
+    }
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,6 +48,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/login.css">
 </head>
 <!-- Coded With Love By Mutiullah Samim-->
 <body>
@@ -41,7 +84,7 @@
             </div>
             <div class="card-footer">
                 <a class="btn btn-secondary btn-sm" id="add_more"><i class="fas fa-plus-circle"></i> Create Account</a>
-                <button class="btn btn-success btn-sm float-right submit_btn"><i class="fas fa-arrow-alt-circle-right"></i> Login</button>
+                <button type = "submit" name = "loginbtn" class="btn btn-success btn-sm float-right submit_btn"><i class="fas fa-arrow-alt-circle-right"></i> Login</button>
             </div>
         </div>
     </div>
